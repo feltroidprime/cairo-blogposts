@@ -12,3 +12,5 @@ Cairo is a turing-complete programming language that you can prove.
 
 
 ### 3. A more complex example requiring deeper mathematics 
+
+### 4. Summary : when and how to use the power of hints in Cairo 
