@@ -51,16 +51,10 @@ func get_felt_bitlength{range_check_ptr, bitwise_ptr: BitwiseBuiltin*}(x: felt) 
 ```
 ### 3. A more complex example requiring deeper mathematics 
 
-Let's say you need to compute a square root of 
+Let's say you need to compute a square root of. 
+
 ```
-// Finds a square root of x in F_p, i.e. x ≅ y**2 (mod p) for some y
-// To do so, the following is done in a hint:
-// 0. Assume x is not  0 mod p
-// 1. Check if x is a square, if yes, find a square root r of it
-// 2. If (and only if not), then gx *is* a square (for g a generator of F_p^*), so find a square root r of it
-// 3. Check in Cairo that r**2 = x (mod p) or r**2 = gx (mod p), respectively
-// NOTE: The function assumes that 0 <= x < p
-func get_square_root{range_check_ptr}(x: Uint256, G:Uint256, P:Uint256) -> (success: felt, res: Uint256) {
+func get_square_root_mod_p{range_check_ptr}(x: Uint256, G:Uint256, P:Uint256) -> (success: felt, res: Uint256) {
     alloc_locals;
 
     let is_zero = u255.eq(x, Uint256(0, 0));
