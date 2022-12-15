@@ -1,8 +1,11 @@
-## Defeating Malicious Provers in Cairo hints with Developer Schizophrenia 
+## Defeating Malicious Provers in Cairo with Developer Schizophrenia. How to have a Zero Knwoledge Proof mentality in practice. 
 
 How to use the power of Cairo hints by being two developers at the same time. 
 
 Hints in Cairo can at the same time be very powerful when utilized properly, and very dangerous if malicious actions are not prevented. In this post, we'll review through two examples how to defeat malicious provers by forcing them to comply to provide you what you want. 
+
+https://www.cairo-lang.org/docs/how_cairo_works/hints.html
+
 
 ### 1. A brief recap about Cairo, provers and verifiers. 
 
@@ -104,11 +107,16 @@ func get_square_root_mod_p{range_check_ptr}(x: Uint256, G:Uint256, P:Uint256) ->
 
 ```
 
-### 4. Another application : verifying some input data for local Cairo programs. 
+### 4. 
+
+
 
 
 ### 4. Summary : when and how to use the power of hints in Cairo 
 
+In some way
+Hints are very useful when the verification cost of computing some value is cheaper than finding the value. 
+Some other examples can include finding solutions to some equations.
 What 
 What will be the properties of the inputs you're going to provide ?
 What inequality defines them ? 
