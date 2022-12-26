@@ -9,7 +9,52 @@ https://www.cairo-lang.org/docs/how_cairo_works/hints.html
 
 ### 1. A brief recap about Cairo, provers and verifiers. 
 
-Cairo is a turing-complete programming language that you can prove. 
+Cairo is a turing-complete programming language that you can prove. It is not like your traditional programming language when you run the code on your machine or a cloud server and that's it. Here, there is two people involved: 
+- The prover who runs the full .cairo code and outputs a proof a computation. 
+- the verifier who validates the proof related to the .cairo file, without running the .cairo file. 
+
+The scaling property of STARK proofs is such that validating a proof is cheaper than running the original .cairo in the first place. 
+
+Note that the proof is only related to Cairo code inside the .cairo file. This important because when you're writing .cairo files, you can write two types of code. Hints, that are only executed by the prover but it is not proven, and the cairo code that is proven. 
+
+The idea is that you can create entries for some values in you cairo code and ask inside the hint to the prover to fill those values. 
+
+```
+// Asserts that value is in the range [lower, upper).
+// Or more precisely:
+// (0 <= value - lower < RANGE_CHECK_BOUND) and (0 <= upper - 1 - value < RANGE_CHECK_BOUND).
+//
+// Prover assumption: 0 <= upper - lower <= RANGE_CHECK_BOUND.
+func assert_in_range{range_check_ptr}(value, lower, upper) {
+    assert_le(lower, value);
+    assert_le(value, upper - 1);
+    return ();
+}
+
+// Returns the floor value of the square root of the given value.
+// Assumptions: 0 <= value < 2**250.
+@known_ap_change
+func sqrt{range_check_ptr}(value) -> felt {
+    alloc_locals;
+    local root: felt;
+
+    %{
+        from starkware.python.math_utils import isqrt
+        value = ids.value % PRIME
+        assert value < 2 ** 250, f"value={value} is outside of the range [0, 2**250)."
+        assert 2 ** 250 < PRIME
+        ids.root = isqrt(value)
+    %}
+
+    assert_nn_le(root, 2 ** 125 - 1);
+    tempvar root_plus_one = root + 1;
+    assert_in_range(value, root * root, root_plus_one * root_plus_one);
+
+    return root;
+}
+
+
+```
 
 ### 2. A simple yet detailed example
 
